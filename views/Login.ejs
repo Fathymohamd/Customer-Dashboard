@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="stylesheet" href="./css/authentication.css">
+      <link rel="stylesheet" href="./css/Login.css">
+</head>
+<body>
+<div class="body">
+<div class="container">
+<a href="/"><div class="codpan"><p>c4a.dev</p></div></a>
+<div class="login_rigth"><a href="/Login"><div class="login">Login</div></a>
+<a href="/Sinup"><div class="sinup">Sin Up</div></div></a>
+</div>
+<div class="form">
+<div id="form">
+ <form action="/Login"  method="post" class="sinup">
+<h1>LogIn</h1>
+  <label for="email" class="Email">
+    Email
+  </label>
+
+<input id="email" name="email" type="text" placeholder="Email"/>
+<% if(typeof error0 !== "undefined" && error0){ %>
+  <h3 style="color: red;"><%= error0 %></h3>
+<% } %>
+ <label for="password" class="Password">
+    Password
+  </label>
+<input type="password" name="password" placeholder="Password"/>
+<% if(typeof error !== "undefined" && error){ %>
+  <h3 style="color: red;"><%= error %></h3>
+<% } %>
+<input type="submit" class="save"/>
+</form>
+</div>
+</div>
+<div class="and">Designed and developed by Fathy Mohamed 2026</div>
+</div>
+</body>
+</html>

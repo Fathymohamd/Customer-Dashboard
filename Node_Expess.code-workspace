@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../bootstrap-project-final-project/hosting/user"
+		},
+		{
+			"path": "../bootstrap-project-final-project/hosting/bootstrap-icons-1.10.5"
+		}
+	],
+	"settings": {}
+}

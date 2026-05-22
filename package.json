@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-livereload": "^0.6.1",
+    "dotenv": "^17.4.2",
+    "ejs": "^5.0.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "livereload": "^0.10.3",
+    "moment": "^2.30.1",
+    "mongoose": "^9.6.2"
+  },
+  "name": "node_expess",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon App.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

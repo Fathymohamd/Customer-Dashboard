@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.body {
+  background-color: rgba(0, 0, 0, 0.732);
+  height: 100vh;
+}
+.container{
+width: 60%;
+margin: auto;
+justify-content: space-around;
+align-items: center;
+}
+.container , .login_rigth {
+   display: flex;
+}
+.login_rigth {
+justify-content: space-around;
+align-items: center;
+}
+.codpan , .login_rigth  .login , .login_rigth  .sinup {
+font-size: 18px;
+font-weight: 800;
+cursor: pointer;
+color: #faf5f5;
+}
+.login_rigth  .login , .login_rigth  .sinup {
+padding:0 10px;
+}
+.welcome , .dashboard {
+  width: 60%;
+  margin: 1rem auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.codpan , .login_rigth {
+    margin: 2rem;
+}
+.welcome  {
+ height: 60vh;
+}
+.system {
+  height: auto;
+  color: #fff;
+}
+.system p {
+width: 50%;
+height:3rem auto;
+font-size: 17px;
+font-weight: 400;
+margin: 2rem auto;
+  color: #fff;
+}
+.dashboard  p{
+     padding: 10px 50px; 
+    cursor: pointer; 
+    font-size: 20px; 
+    font-weight: 600; 
+    background-color: #fff; 
+    margin: 0 10px; border-radius: 3px; 
+    -webkit-border-radius: 3px; 
+    -moz-border-radius: 3px; 
+    -ms-border-radius: 3px; 
+    -o-border-radius: 3px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+@media (max-width: 400px){
+  .dashboard{
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  .container{
+    width: 100% !important;
+    margin: auto !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+}
+@media(max-width: 768px) {
+  .container{
+width: 80% !important;
+margin: auto;
+justify-content: space-between;
+align-items: center;
+}
+.welcome , .dashboard {
+  width: 80% !important;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.system p {
+width: 90% !important;
+height:3rem auto;
+font-size: 22px !important;
+font-weight: 400;
+margin: 2rem auto;
+  color: #fff;
+}
+  .dashboard{
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
