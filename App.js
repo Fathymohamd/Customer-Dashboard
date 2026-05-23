@@ -12,8 +12,8 @@ const signout = require("./routes/Signout");
 require("dotenv").config();
 const cors = require("cors");
 
-app.use(cors());
 const app = express();
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());

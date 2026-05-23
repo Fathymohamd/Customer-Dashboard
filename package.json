@@ -16,10 +16,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon App.js"
-  },
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "watch": "nodemon App.js",
+  "start": "node App.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
