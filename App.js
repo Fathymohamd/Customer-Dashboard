@@ -1,51 +1,45 @@
-const Customer  = require("./modle/customer");
-const moment = require("moment");
 const express = require("express");
-const livereload = require("livereload");
-const connectLiveReload = require("connect-livereload");
+const cors = require("cors");
 const session = require("express-session");
+const moment = require("moment");
+const dotenv = require("dotenv");
+
+const Customer = require("./modle/customer");
 const mongoose = require("./config/db");
+
 const authRoutes = require("./routes/authRoutes");
 const logRoutes = require("./routes/logRoutes");
 const userRoutes = require("./routes/userRoutes");
 const signout = require("./routes/Signout");
-require("dotenv").config();
-const cors = require("cors");
 
+dotenv.config();
 const app = express();
+
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.json());
 
 app.use(session({
-  secret: process.env.DATABASE,
+  secret: process.env.SESSION_SECRET || "secret_key",
   resave: false,
   saveUninitialized: false,
-    cookie: {
+  cookie: {
     maxAge: 1000 * 60 * 60 * 24
   }
 }));
 
+
+
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+
 
 
 app.use("/", authRoutes);
 app.use("/", logRoutes);
 app.use("/", signout);
 app.use("/", userRoutes);
-
-
-
-// Live Reload
-const liveReloadServer = livereload.createServer();
-
-app.use(connectLiveReload());
-
-liveReloadServer.watch(__dirname + "/public");
-
-liveReloadServer.watch(__dirname + "/views");
 
 
 app.post("/user/add", async (req, res) => {
@@ -58,44 +52,36 @@ app.post("/user/add", async (req, res) => {
     res.redirect("/index");
 
   } catch (err) {
-
     console.log(err);
     res.send("Error occurred");
   }
 });
 
 
-
 app.get("/user/:id", async (req, res) => {
-
   const user = await Customer.findById(req.params.id);
 
   res.render("user/view", {
-    user: user,
-    moment: moment,
+    user,
+    moment,
     name: req.session.user?.name
   });
-
 });
 
 
+
 app.post("/user/delete/:id", async (req, res) => {
-
   await Customer.findByIdAndDelete(req.params.id);
-
   res.redirect("/index");
-
 });
 
 
 
 app.post("/user/update/:id", async (req, res) => {
-
   await Customer.findByIdAndUpdate(req.params.id, req.body);
-
   res.redirect("/index");
-
 });
+
 
 
 app.get("/search", async (req, res) => {
@@ -108,13 +94,18 @@ app.get("/search", async (req, res) => {
 
   res.render("index", {
     arr: users,
-    moment: moment,
+    moment,
     name: req.session.user?.name
   });
 });
 
-app.listen(5000, () => {
- console.log("Server running 5000");
+app.get("/", (req, res) => {
+  res.send("Server is running 🚀");
+});
 
-})
-mongoose();
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
