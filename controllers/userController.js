@@ -35,7 +35,8 @@ exports.login = async (req, res) => {
     return res.redirect("/index");
 
   } catch (err) {
-    console.log("LOGIN ERROR:", err);
-    return res.status(500).send("Server error");
-  }
+  console.log("LOGIN ERROR FULL:", err);
+  console.log(err.message);
+  return res.status(500).send(err.message);
+}
 };
