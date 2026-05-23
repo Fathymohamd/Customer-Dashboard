@@ -2,6 +2,7 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "connect-livereload": "^0.6.1",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "ejs": "^5.0.2",
     "express": "^5.2.1",

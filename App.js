@@ -10,7 +10,9 @@ const logRoutes = require("./routes/logRoutes");
 const userRoutes = require("./routes/userRoutes");
 const signout = require("./routes/Signout");
 require("dotenv").config();
+const cors = require("cors");
 
+app.use(cors());
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 
