@@ -4,6 +4,9 @@
     box-sizing: border-box;
 }
 
+body , html {
+  overflow-x: hidden;
+}
 
       .bd-placeholder-img {
         font-size: 1.125rem;

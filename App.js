@@ -11,11 +11,11 @@ const authRoutes = require("./routes/authRoutes");
 const logRoutes = require("./routes/logRoutes");
 const userRoutes = require("./routes/userRoutes");
 const signout = require("./routes/Signout");
-
 dotenv.config();
+const compression = require("compression");
+
+app.use(compression());
 const app = express();
-
-
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -109,3 +109,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+mongoose()
