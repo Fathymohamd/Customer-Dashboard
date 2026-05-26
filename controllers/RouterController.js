@@ -10,7 +10,7 @@ exports.createUser = async (req, res) => {
     res.render("index", {
       arr: users,
       moment: moment,
-      name: req.session.user?.name
+      name: req.session.user?.UserName
     });
   } catch (err) {
     console.log(err);
@@ -20,11 +20,11 @@ exports.createUser = async (req, res) => {
 
 exports.Useredit =  async (req, res) => {
   await User.findById(req.params.id).then((user)=>{
-   res.render("user/edit" , {user : user , name : req.session.user?.name});
+   res.render("user/edit" , {user : user , name : req.session.user?.UserName});
   }).catch((err)=>{console.log(err)})
 }
 exports.app = async (req , res) => {await res.render("user/add" , {
-  name: req.session.user?.name
+  name: req.session.user?.UserName
 })}
 exports.authentication =  async(req, res) => {await res.render("authentication")};
 exports.search =  async(req , res) => {await res.render("user/search")}

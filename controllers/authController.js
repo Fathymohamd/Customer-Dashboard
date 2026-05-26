@@ -3,43 +3,47 @@ const Usermodel = require("../modle/UserModel");
 
 exports.signup = async (req, res) => {
   try {
-    const { UserName, email, password } = req.body;
+    const { UserName , email, password } = req.body;
+if (!UserName || UserName.trim() === "") {
+  return res.render("Sinup", {
+    error: "Name is required"
+  });
+}
 
-    if (!UserName || !email || !password) {
-      return res.render("Sinup", { error: "All fields are required" });
+if (!email || email.trim() === "") {
+  return res.render("Sinup", {
+    error0: "Email is required"
+  });
+}
+
+if (!password || password.trim() === "") {
+  return res.render("Sinup", {
+    error2: "Password is required"
+  });
+}
+    const user = await Usermodel.findOne({ email });
+    if (user) {
+      return res.render("Sinup", { error0: "Email already exists" });
     }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.render("Sinup", { error: "Invalid email" });
-    }
-
     const strongPassword =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
     if (!strongPassword.test(password)) {
       return res.render("Sinup", {
-        error: "Weak password"
+        error2: "Weak password"
       });
     }
 
-    const user = await Usermodel.findOne({ email });
-
-    if (user) {
-      return res.render("Sinup", { error: "Email already exists" });
-    }
-
-    const hashPassword = await bcrypt.hash(password, 10);
-
-    const newUser = await Usermodel.create({
-      name: UserName,
-      email,
-      password: hashPassword
-    });
+  const hashPassword = await bcrypt.hash(password, 10);
+const newUser = await Usermodel.create({
+  UserName,
+  email,
+  password: hashPassword
+});
 
     req.session.user = {
       id: newUser._id,
-      name: newUser.name
+     name: user.UserName || "Unknown"
     };
 
     return res.redirect("/login");

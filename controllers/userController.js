@@ -5,17 +5,24 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.render("Login", {
-        error: "All fields are required"
-      });
-    }
+
+if (!email || email.trim() === "") {
+  return res.render("Login", {
+    error0: "Email is required"
+  });
+}
+
+if (!password || password.trim() === "") {
+  return res.render("Login", {
+    error: "Password is required"
+  });
+}
 
     const user = await Usermodel.findOne({ email });
 
     if (!user) {
       return res.render("Login", {
-        error: "User not found"
+        error0: "User not found"
       });
     }
 
@@ -29,11 +36,14 @@ exports.login = async (req, res) => {
 
     req.session.user = {
       id: user._id,
-      name: user.name
+      name: user.UserName || "Unknown"
     };
-
-    return res.redirect("/index");
-
+ 
+    req.session.save(() => {
+  res.redirect("/index");
+});
+console.log("SESSION:", req.session);
+console.log("USER:", req.session.user);
   } catch (err) {
   console.log("LOGIN ERROR FULL:", err);
   console.log(err.message);
