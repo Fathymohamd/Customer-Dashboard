@@ -43,7 +43,7 @@ const newUser = await Usermodel.create({
 
     req.session.user = {
       id: newUser._id,
-     name: user.UserName || "Unknown"
+     name: newUser.UserName || "Unknown"
     };
 
     return res.redirect("/login");

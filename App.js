@@ -16,13 +16,13 @@ const signout = require("./routes/Signout");
 
 const app = express();
 
-/* ================= MIDDLEWARE ================= */
+connectDB();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(compression());
 app.use(cors());
 
-/* ================= SESSION ================= */
+
 app.set("trust proxy", 1);
 
 app.use(
@@ -40,20 +40,18 @@ app.use(
   })
 );
 
-/* ================= VIEW ENGINE ================= */
+
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
-/* ================= CONNECT DB ================= */
 
 
-/* ================= ROUTES ================= */
-app.use("/", authRoutes);
+
+
 app.use("/", logRoutes);
 app.use("/", signout);
 app.use("/", userRoutes);
 
-/* ================= CUSTOM ROUTES ================= */
 
 app.post("/user/add", async (req, res) => {
   try {
@@ -110,11 +108,9 @@ app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });
 
-/* ================= START SERVER ================= */
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on ${PORT}`);
 });
 
-connectDB();

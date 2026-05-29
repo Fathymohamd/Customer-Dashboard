@@ -25,6 +25,7 @@ if (!password || password.trim() === "") {
         error0: "User not found"
       });
     }
+  
 
     const isMatch = await bcrypt.compare(password, user.password);
 
