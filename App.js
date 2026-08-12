@@ -5,25 +5,31 @@ const cors = require("cors");
 const session = require("express-session");
 const moment = require("moment");
 const compression = require("compression");
+const mongoose = require("mongoose");
 
 const Customer = require("./modle/customer");
 const connectDB = require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
 const logRoutes = require("./routes/logRoutes");
-const userRoutes = require("./routes/userRoutes");
 const signout = require("./routes/Signout");
 
 const app = express();
 
-connectDB();
+// =========================
+// Middlewares
+// =========================
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(compression());
 app.use(cors());
 
-
 app.set("trust proxy", 1);
+
+// =========================
+// Session
+// =========================
 
 app.use(
   session({
@@ -40,17 +46,31 @@ app.use(
   })
 );
 
+// =========================
+// View Engine
+// =========================
 
 app.set("view engine", "ejs");
+
 app.use(express.static("public"));
 
-
-
-
+// =========================
+// Authentication Routes
+// =========================
 
 app.use("/", logRoutes);
 app.use("/", signout);
-app.use("/", userRoutes);
+app.use("/", authRoutes);
+
+
+
+app.get("/user/add", (req, res) => {
+  res.render("user/add", {
+    name: req.session.user?.name,
+    
+  });
+
+});
 
 
 app.post("/user/add", async (req, res) => {
@@ -63,54 +83,169 @@ app.post("/user/add", async (req, res) => {
     res.redirect("/index");
   } catch (err) {
     console.log(err);
-    res.send("Error occurred");
+    res.status(500).send("Error occurred");
+  }
+});
+
+app.get("/user/edit/:id", async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send("Invalid User ID");
+    }
+
+    const user = await Customer.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    res.render("user/edit", {
+      user,
+      name: req.session.user?.name,
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error occurred");
   }
 });
 
 app.get("/user/:id", async (req, res) => {
-  const user = await Customer.findById(req.params.id);
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send("Invalid User ID");
+    }
 
-  res.render("user/view", {
-    user,
-    moment,
-    name: req.session.user?.name,
-  });
+    const user = await Customer.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    res.render("user/view", {
+      user,
+      moment,
+      name: req.session.user?.name,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error occurred");
+  }
 });
+
+// =========================
+// Delete Customer
+// =========================
 
 app.post("/user/delete/:id", async (req, res) => {
-  await Customer.findByIdAndDelete(req.params.id);
-  res.redirect("/index");
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send("Invalid User ID");
+    }
+
+    await Customer.findByIdAndDelete(req.params.id);
+
+    res.redirect("/index");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error occurred");
+  }
 });
+
+// =========================
+// Update Customer
+// =========================
 
 app.post("/user/update/:id", async (req, res) => {
-  await Customer.findByIdAndUpdate(req.params.id, req.body);
-  res.redirect("/index");
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send("Invalid User ID");
+    }
+
+    await Customer.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    );
+
+    res.redirect("/index");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error occurred");
+  }
 });
+
+
 
 app.get("/search", async (req, res) => {
-  const search = req.query.search || "";
+  try {
+    const search = req.query.search || "";
 
-  const users = await Customer.find({
-    FirstName: {
-      $regex: search,
-      $options: "i",
-    },
-  });
+    const users = await Customer.find({
+      FirstName: {
+        $regex: search,
+        $options: "i",
+      },
+    });
 
-  res.render("index", {
-    arr: users,
-    moment,
-    name: req.session.user?.name,
-  });
+    res.render("index", {
+      arr: users,
+      moment,
+      name: req.session.user?.name,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error occurred");
+  }
 });
 
-app.get("/", (req, res) => {
-  res.send("Server is running 🚀");
+
+
+app.get("/index", async (req, res) => {
+  try {
+    const users = await Customer.find();
+
+    res.render("index", {
+      arr: users,
+      moment,
+      name: req.session.user?.name,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error occurred");
+  }
 });
+
+
+
+app.get("/", async (req, res) => {
+  try {
+    const users = await Customer.find();
+
+    res.render("authentication", {
+      arr: users,
+      moment,
+      name: req.session.user?.name,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error occurred");
+  }
+});
+
+
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await connectDB();
 
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on ${PORT}`);
+    });
+  } catch (err) {
+    console.log("Failed to start server:", err);
+  }
+};
+
+startServer();
